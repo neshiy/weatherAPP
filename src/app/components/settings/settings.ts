@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
@@ -50,6 +51,8 @@ export class Settings implements OnInit {
       const settings = JSON.parse(savedSettings);
       Object.assign(this, settings);
     }
+    // reset dirty flag
+    this.dirty = false;
   }
 
   saveSettings() {
@@ -75,15 +78,22 @@ export class Settings implements OnInit {
     localStorage.setItem('weatherAppSettings', JSON.stringify(settings));
   }
 
+  // track whether user changed settings but hasn't applied them
+  dirty: boolean = false;
+
+  // User-facing: mark the settings as changed but do not apply
+  onSettingChange() {
+    this.dirty = true;
+  }
+
   toggleTheme() {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
-    this.saveSettings();
-    this.applyTheme();
+    this.dirty = true;
   }
 
   toggleAutoTheme() {
     this.autoTheme = !this.autoTheme;
-    this.saveSettings();
+    this.dirty = true;
     if (this.autoTheme) {
       this.setAutoTheme();
     }
@@ -96,22 +106,35 @@ export class Settings implements OnInit {
   private setAutoTheme() {
     const hour = new Date().getHours();
     this.theme = hour >= 6 && hour < 18 ? 'light' : 'dark';
-    this.applyTheme();
+    this.dirty = true;
   }
 
   addFavoriteCity(city: string) {
     if (city && !this.favoriteCities.includes(city)) {
       this.favoriteCities.push(city);
-      this.saveSettings();
+      this.dirty = true;
     }
   }
 
   removeFavoriteCity(city: string) {
     this.favoriteCities = this.favoriteCities.filter(c => c !== city);
-    this.saveSettings();
+    this.dirty = true;
   }
 
-  onSettingChange() {
+  // Apply current (unsaved) settings to the app and persist them
+  applySettings() {
     this.saveSettings();
+    this.applyTheme();
+    this.dirty = false;
+    // notify others (map, components) that settings changed
+    try {
+      window.dispatchEvent(new CustomEvent('settings:applied', { detail: localStorage.getItem('weatherAppSettings') }));
+    } catch (e) { /* ignore */ }
+  }
+
+  // Discard changes made since last load/save
+  cancelSettings() {
+    this.loadSettings();
+    this.dirty = false;
   }
 }

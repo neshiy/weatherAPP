@@ -1,9 +1,9 @@
 <div class="settings-container">
-  <h1>⚙️ Settings</h1>
+  <h1>⚙️ {{ 'settings.title' | translate }}</h1>
 
   <!-- Units Section -->
   <div class="settings-card">
-    <h2>🌡️ Units</h2>
+    <h2>🌡️ {{ 'units.title' | translate }}</h2>
 
     <div class="setting-item">
       <label>Temperature</label>
@@ -53,7 +53,7 @@
 
   <!-- Theme Section -->
   <div class="settings-card">
-    <h2>🎨 Theme</h2>
+    <h2>🎨 {{ 'theme.title' | translate }}</h2>
 
     <div class="setting-item">
       <label>Theme Mode</label>
@@ -77,7 +77,7 @@
 
   <!-- Notifications Section -->
   <div class="settings-card">
-    <h2>🔔 Notifications</h2>
+    <h2>🔔 {{ 'notifications.title' | translate }}</h2>
 
     <div class="setting-item">
       <label>Weather Alerts</label>
@@ -127,11 +127,11 @@
 
   <!-- Location Preferences Section -->
   <div class="settings-card">
-    <h2>📍 Location Preferences</h2>
+    <h2>📍 {{ 'location.title' | translate }}</h2>
 
     <div class="setting-item">
-      <label>Default City</label>
-      <input type="text" [(ngModel)]="defaultCity" (change)="onSettingChange()" placeholder="Enter city name" class="setting-input">
+      <label>{{ 'location.title' | translate }}</label>
+      <input type="text" [(ngModel)]="defaultCity" (change)="onSettingChange()" placeholder="{{ 'search.placeholder' | translate }}" class="setting-input">
     </div>
 
     <div class="setting-item">
@@ -146,8 +146,8 @@
       <label>Favorite Cities</label>
       <div class="favorite-cities">
         <div class="add-city">
-          <input type="text" #newCity placeholder="Add city" class="setting-input">
-          <button (click)="addFavoriteCity(newCity.value); newCity.value=''" class="add-btn">Add</button>
+          <input type="text" #newCity placeholder="{{ 'search.placeholder' | translate }}" class="setting-input">
+          <button (click)="addFavoriteCity(newCity.value); newCity.value=''" class="add-btn">{{ 'settings.apply' | translate }}</button>
         </div>
         <div class="cities-list">
           <div *ngFor="let city of favoriteCities" class="city-item">
@@ -161,7 +161,7 @@
 
   <!-- Map Settings Section -->
   <div class="settings-card">
-    <h2>🗺️ Map Settings</h2>
+    <h2>🗺️ {{ 'map.title' | translate }}</h2>
 
     <div class="setting-item">
       <label>Map Style</label>
@@ -183,7 +183,7 @@
 
   <!-- Language Section -->
   <div class="settings-card">
-    <h2>🌐 Language</h2>
+    <h2>🌐 {{ 'settings.title' | translate }}</h2>
 
     <div class="setting-item">
       <label>App Language</label>
@@ -200,5 +200,16 @@
         <option value="zh">中文</option>
       </select>
     </div>
+  </div>
+</div>
+
+<!-- Actions footer: placed after all sections to apply or cancel changes -->
+<div class="settings-footer">
+  <div class="footer-left">
+    <span class="unsaved" *ngIf="dirty">{{ 'settings.unsaved' | translate }}</span>
+  </div>
+  <div class="footer-actions">
+    <button class="cancel-btn" (click)="cancelSettings()">{{ 'settings.cancel' | translate }}</button>
+    <button class="apply-btn primary" (click)="applySettings()" [disabled]="!dirty">{{ 'settings.apply' | translate }}</button>
   </div>
 </div>

@@ -1,13 +1,14 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { WeatherService } from '../../services/weather.service';
 import * as L from 'leaflet';
 
 @Component({
   selector: 'app-weather',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './weather.html',
   styleUrl: './weather.css'
 })
@@ -35,6 +36,19 @@ export class WeatherComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.getLocation();
+  }
+
+  ngAfterContentInit() {
+    // ensure language is in sync with saved settings on load
+    try {
+      const saved = localStorage.getItem('weatherAppSettings');
+      if (saved) {
+        const s = JSON.parse(saved);
+        if (s && s.language) {
+          // no-op here; TranslationService listens to settings:applied event
+        }
+      }
+    } catch (e) { }
   }
 
   ngAfterViewInit(): void {

@@ -2,10 +2,12 @@ import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { WeatherComponent } from './components/weather/weather';
+import { TranslatePipe } from './pipes/translate.pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, WeatherComponent, CommonModule],
+  // include translate pipe so app template can use `| translate`
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, WeatherComponent, CommonModule, TranslatePipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

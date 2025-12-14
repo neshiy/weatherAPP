@@ -4,12 +4,12 @@
     <div class="search-controls">
       <input
         type="text"
-        placeholder="Enter city name"
+        placeholder="{{ 'search.placeholder' | translate }}"
         [(ngModel)]="city"
         (keyup.enter)="searchWeather()"
       />
-      <button (click)="searchWeather()">🔍 Search</button>
-      <button (click)="getLocation()">📍 Detect Location</button>
+      <button (click)="searchWeather()">{{ 'search.button' | translate }}</button>
+      <button (click)="getLocation()">{{ 'search.detect' | translate }}</button>
         <button (click)="toggleUnit()">{{ unit === 'metric' ? '°F' : '°C' }}</button>
     </div>
   </div>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="map-card animate-card">
-      <h3>Location Map</h3>
+      <h3>{{ 'map.title' | translate }}</h3>
       <div class="map-container" #mapContainer></div>
     </div>
   </div>
@@ -55,7 +55,7 @@
 
   <!-- Air Quality Card -->
   <div class="air-quality-card animate-card" *ngIf="airQualityData">
-    <h3>Air Quality</h3>
+  <h3>{{ 'air.quality' | translate }}</h3>
     <div class="aqi-display">
       <div class="aqi-value" [style.color]="getAQIColor(airQualityData.main.aqi)">
         {{ airQualityData.main.aqi }}
