@@ -6,54 +6,48 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 To start a local development server, run:
 
-```bash
-ng serve
-```
+# WeatherAPP
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+A lightweight Angular-based weather dashboard showing current conditions, forecast, air quality and a map.
 
-## Code scaffolding
+**Quick Start**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Requirements:** Node.js (16+), npm, Angular CLI (optional).
+- **Install:**
 
-```bash
-ng generate component component-name
-```
+	```bash
+	npm install
+	```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Run (dev):**
 
-```bash
-ng generate --help
-```
+	```bash
+	ng serve
+	# then open http://localhost:4200/
+	```
 
-## Building
+- **Build (production):**
 
-To build the project run:
+	```bash
+	npm run build
+	# or: ng build --configuration production
+	```
 
-```bash
-ng build
-```
+**Features**
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Current weather lookup (by geolocation or city search).
+- 5-day forecast cards.
+- Air quality (OpenWeather Air Pollution API).
+- Interactive Leaflet map with dark/light basemaps and a marker for the selected location.
+- Theme and units are saved to `localStorage` via the Settings panel.
 
-## Running unit tests
+**Notes / Troubleshooting**
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- If the hero card appears blank on a hard refresh but becomes visible after you toggle the sidebar, an automatic fix was added: the app now forces a small repaint (change detection + a `resize` event) after weather data loads so the hero card and map render immediately. If you still see issues, try a manual browser refresh and make sure Leaflet CSS is loaded in `src/styles.css`.
+- Marker and Leaflet icon assets are loaded from remote URLs. You can copy them into `src/assets/` and update the icon paths in `src/app/components/weather/weather.ts` if you prefer local assets.
 
-```bash
-ng test
-```
+**Development notes**
 
-## Running end-to-end tests
+- Map redraws on sidebar toggle via a dispatched `sidebar:toggled` event. The app also invalidates the Leaflet map size on window `resize` and when the theme (`body` class) changes.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Enjoy — ask if you want a README expanded with screenshots or deployment steps!

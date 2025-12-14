@@ -1,3 +1,75 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* Global theme overrides: light and dark modes applied to <body> by Settings component */
+body.light-theme {
+	background-color: #ffffff;
+	color: #1e293b; /* darker text on light bg */
+}
+
+body.dark-theme {
+	background-color: #1e293b;
+	color: #cbd5e1;
+}
+
+/* When body has light-theme, make main app containers use light backgrounds */
+body.light-theme .weather-dashboard,
+body.light-theme .settings-container {
+	background-color: transparent; /* let body show as white */
+	color: #1e293b;
+}
+
+/* Ensure cards remain visually distinct in light mode */
+body.light-theme .settings-card,
+body.light-theme .hero-card,
+body.light-theme .map-card,
+body.light-theme .forecast-card,
+body.light-theme .air-quality-card,
+body.light-theme .analytics-card,
+body.light-theme .error-message,
+body.light-theme .loading {
+	background-color: #f8fafc; /* very light card bg */
+	color: #1e293b;
+	border: 1px solid #e2e8f0;
+}
+
+/* Global app header/sidebar/main-content overrides (must be in global styles so they apply despite Angular scoping) */
+body.light-theme .app-header {
+	background-color: #e6f6ff !important; /* light blue */
+	border-bottom: 1px solid #c7ecff !important;
+	color: #0f172a !important;
+}
+
+body.light-theme .sidebar {
+	background-color: #e6f6ff !important;
+	color: #0f172a !important;
+}
+
+body.light-theme .main-content {
+	background-color: #ffffff !important;
+	color: #0f172a !important;
+}
+
+body.light-theme .sidebar-item a {
+	color: #0f172a !important;
+}
+
+body.light-theme .sidebar-item a:hover {
+	background-color: #cfefff !important;
+	color: #0f172a !important;
+}
+
+body.light-theme .sidebar-item.active a {
+	background-color: #38bdf8 !important;
+	color: #ffffff !important;
+}
+
+/* ensure header text and date color update */
+body.light-theme .header-left h1,
+body.light-theme .header-right .current-date {
+	color: #0f172a !important;
+}
+

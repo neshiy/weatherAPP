@@ -1,0 +1,96 @@
+<div class="weather-dashboard" [class.dark-mode]="darkMode">
+  <!-- Search Row -->
+  <div class="search-row">
+    <div class="search-controls">
+      <input
+        type="text"
+        placeholder="Enter city name"
+        [(ngModel)]="city"
+        (keyup.enter)="searchWeather()"
+      />
+      <button (click)="searchWeather()">🔍 Search</button>
+      <button (click)="getLocation()">📍 Detect Location</button>
+        <button (click)="toggleUnit()">{{ unit === 'metric' ? '°F' : '°C' }}</button>
+    </div>
+  </div>
+
+  <!-- Top Row - Hero Card and Map Card -->
+  <div class="top-row">
+    <div class="hero-card" *ngIf="weatherData" [style.background]="getGradient(weatherData.weather[0].main)">
+      <div class="hero-content">
+        <h1>{{ weatherData.name }}, {{ weatherData.sys.country }}</h1>
+        <div class="hero-temp">
+          <img [src]="getWeatherIconUrl(weatherData.weather[0].icon)" alt="Weather icon" class="hero-icon" [class.sun]="weatherData.weather[0].main === 'Clear'" />
+          <span class="temp-value">{{ weatherData.main.temp | number:'1.0-1' }}°{{ unit === 'metric' ? 'C' : 'F' }}</span>
+        </div>
+        <p class="hero-condition">{{ weatherData.weather[0].description }}</p>
+        <div class="min-max">
+          <span>Min {{ weatherData.main.temp_min | number:'1.0-1' }}°</span> |
+          <span>Max {{ weatherData.main.temp_max | number:'1.0-1' }}°</span>
+        </div>
+        <div class="badges">
+          <span class="badge">💧 {{ weatherData.main.humidity }}% Humidity</span>
+          <span class="badge">💨 {{ weatherData.wind.speed }} {{ unit === 'metric' ? 'm/s' : 'mph' }} Wind</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-card animate-card">
+      <h3>Location Map</h3>
+      <div class="map-container" #mapContainer></div>
+    </div>
+  </div>
+
+  <!-- Forecast Cards -->
+  <div class="forecast-row" *ngIf="forecastData.length > 0">
+    <div class="forecast-card animate-card" *ngFor="let day of forecastData">
+      <div class="forecast-day">{{ getDayName(day.date) }}</div>
+      <img [src]="getWeatherIconUrl(day.icon)" alt="Forecast icon" class="forecast-icon" />
+      <div class="forecast-temps">
+        <span class="max-temp">{{ day.maxTemp | number:'1.0-1' }}°</span>
+        <span class="min-temp">{{ day.minTemp | number:'1.0-1' }}°</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Air Quality Card -->
+  <div class="air-quality-card animate-card" *ngIf="airQualityData">
+    <h3>Air Quality</h3>
+    <div class="aqi-display">
+      <div class="aqi-value" [style.color]="getAQIColor(airQualityData.main.aqi)">
+        {{ airQualityData.main.aqi }}
+      </div>
+      <div class="aqi-label">{{ getAQIDescription(airQualityData.main.aqi) }}</div>
+    </div>
+    <div class="pollutants">
+      <div class="pollutant">PM2.5: {{ airQualityData.components.pm2_5 | number:'1.1-1' }} µg/m³</div>
+      <div class="pollutant">PM10: {{ airQualityData.components.pm10 | number:'1.1-1' }} µg/m³</div>
+      <div class="pollutant">CO: {{ airQualityData.components.co | number:'1.1-1' }} µg/m³</div>
+      <div class="pollutant">NO₂: {{ airQualityData.components.no2 | number:'1.1-1' }} µg/m³</div>
+    </div>
+  </div>
+
+  <!-- Weather Analytics Card -->
+  <div class="analytics-card animate-card">
+    <h3>24-Hour Temperature Trend</h3>
+    <div class="analytics-list">
+      <div class="analytics-item" *ngFor="let hour of getHourlyData()">
+        <span class="time">{{ hour.time }}</span>
+        <span class="temp">{{ hour.temp | number:'1.0-1' }}°{{ unit === 'metric' ? 'C' : 'F' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Row - Error and Loading -->
+  <div class="bottom-row">
+    <!-- Error Message -->
+    <div class="error-message animate-card" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Loading -->
+    <div class="loading animate-card" *ngIf="!weatherData && !errorMessage">
+      Loading weather data...
+    </div>
+  </div>
+</div>

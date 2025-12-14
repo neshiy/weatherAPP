@@ -1,0 +1,204 @@
+<div class="settings-container">
+  <h1>⚙️ Settings</h1>
+
+  <!-- Units Section -->
+  <div class="settings-card">
+    <h2>🌡️ Units</h2>
+
+    <div class="setting-item">
+      <label>Temperature</label>
+      <div class="toggle-group">
+        <button
+          class="toggle-btn"
+          [class.active]="temperatureUnit === 'metric'"
+          (click)="temperatureUnit = 'metric'; onSettingChange()">
+          °C
+        </button>
+        <button
+          class="toggle-btn"
+          [class.active]="temperatureUnit === 'imperial'"
+          (click)="temperatureUnit = 'imperial'; onSettingChange()">
+          °F
+        </button>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Wind Speed</label>
+      <select [(ngModel)]="windSpeedUnit" (change)="onSettingChange()" class="setting-select">
+        <option value="m/s">m/s</option>
+        <option value="km/h">km/h</option>
+        <option value="mph">mph</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label>Pressure</label>
+      <div class="toggle-group">
+        <button
+          class="toggle-btn"
+          [class.active]="pressureUnit === 'hPa'"
+          (click)="pressureUnit = 'hPa'; onSettingChange()">
+          hPa
+        </button>
+        <button
+          class="toggle-btn"
+          [class.active]="pressureUnit === 'mmHg'"
+          (click)="pressureUnit = 'mmHg'; onSettingChange()">
+          mmHg
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theme Section -->
+  <div class="settings-card">
+    <h2>🎨 Theme</h2>
+
+    <div class="setting-item">
+      <label>Theme Mode</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="theme-toggle" [checked]="theme === 'dark'" (change)="toggleTheme()">
+        <label for="theme-toggle" class="switch">
+          <span class="sun">☀️</span>
+          <span class="moon">🌙</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Auto Theme (Day/Night)</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="auto-theme-toggle" [(ngModel)]="autoTheme" (change)="toggleAutoTheme()">
+        <label for="auto-theme-toggle" class="switch"></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Section -->
+  <div class="settings-card">
+    <h2>🔔 Notifications</h2>
+
+    <div class="setting-item">
+      <label>Weather Alerts</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="alerts-toggle" [(ngModel)]="weatherAlerts" (change)="onSettingChange()">
+        <label for="alerts-toggle" class="switch"></label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Severe Weather Notifications</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="severe-toggle" [(ngModel)]="severeWeatherNotifications" (change)="onSettingChange()">
+        <label for="severe-toggle" class="switch"></label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Daily Forecast Notification</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="daily-toggle" [(ngModel)]="dailyForecastNotification" (change)="onSettingChange()">
+        <label for="daily-toggle" class="switch"></label>
+      </div>
+    </div>
+
+    <div class="setting-item" *ngIf="dailyForecastNotification">
+      <label>Notification Time</label>
+      <input type="time" [(ngModel)]="dailyForecastTime" (change)="onSettingChange()" class="setting-input">
+    </div>
+
+    <div class="setting-item">
+      <label>Email Alerts</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="email-toggle" [(ngModel)]="emailAlerts" (change)="onSettingChange()">
+        <label for="email-toggle" class="switch"></label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>SMS Alerts</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="sms-toggle" [(ngModel)]="smsAlerts" (change)="onSettingChange()">
+        <label for="sms-toggle" class="switch"></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Preferences Section -->
+  <div class="settings-card">
+    <h2>📍 Location Preferences</h2>
+
+    <div class="setting-item">
+      <label>Default City</label>
+      <input type="text" [(ngModel)]="defaultCity" (change)="onSettingChange()" placeholder="Enter city name" class="setting-input">
+    </div>
+
+    <div class="setting-item">
+      <label>Allow Geolocation</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="geolocation-toggle" [(ngModel)]="allowGeolocation" (change)="onSettingChange()">
+        <label for="geolocation-toggle" class="switch"></label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>Favorite Cities</label>
+      <div class="favorite-cities">
+        <div class="add-city">
+          <input type="text" #newCity placeholder="Add city" class="setting-input">
+          <button (click)="addFavoriteCity(newCity.value); newCity.value=''" class="add-btn">Add</button>
+        </div>
+        <div class="cities-list">
+          <div *ngFor="let city of favoriteCities" class="city-item">
+            {{ city }}
+            <button (click)="removeFavoriteCity(city)" class="remove-btn">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Settings Section -->
+  <div class="settings-card">
+    <h2>🗺️ Map Settings</h2>
+
+    <div class="setting-item">
+      <label>Map Style</label>
+      <select [(ngModel)]="mapStyle" (change)="onSettingChange()" class="setting-select">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="satellite">Satellite</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label>Show Weather Icons on Map</label>
+      <div class="toggle-switch">
+        <input type="checkbox" id="weather-icons-toggle" [(ngModel)]="showWeatherIcons" (change)="onSettingChange()">
+        <label for="weather-icons-toggle" class="switch"></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Section -->
+  <div class="settings-card">
+    <h2>🌐 Language</h2>
+
+    <div class="setting-item">
+      <label>App Language</label>
+      <select [(ngModel)]="language" (change)="onSettingChange()" class="setting-select">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </div>
+</div>
